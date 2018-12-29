@@ -2,6 +2,7 @@ package com.niemiec.objects.managers;
 
 import java.util.ArrayList;
 
+import com.niemiec.chat.messages.UsersListMessage;
 import com.niemiec.objects.ClientThread;
 
 public class ClientThreadManager {
@@ -18,7 +19,7 @@ public class ClientThreadManager {
 	}
 	
 	public synchronized void sendAllClientThreadNickList() {
-		sendTheObjectAll(clientThreadNickList.clone());
+		sendTheObjectAll(new UsersListMessage(clientThreadNickList.clone()));
 	}
 	
 	public synchronized void sendTheObjectAll(Object object) {
