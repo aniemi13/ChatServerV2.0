@@ -57,8 +57,7 @@ public class ServerConsole {
 	}
 
 	private void shutdown() {
-		// TODO Auto-generated method stub
-		
+		mainWhileServer.interrupt();
 	}
 	
 	public static void log(String info) {

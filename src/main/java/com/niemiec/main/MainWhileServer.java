@@ -52,6 +52,7 @@ public class MainWhileServer extends Thread {
 	}
 
 	public void interrupt() {
+		clientThreadManager.shutdown();
 		super.interrupt();
 		
 		try {

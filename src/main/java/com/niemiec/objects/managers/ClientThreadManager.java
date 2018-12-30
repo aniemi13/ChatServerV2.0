@@ -51,4 +51,13 @@ public class ClientThreadManager {
 		}
 		return null;
 	}
+	
+	public synchronized void shutdown() {
+		try {
+			for (int i = 0; i < clientThreadList.size(); i++)
+				clientThreadList.get(i).interrupt();
+		} catch (Exception e) {
+			
+		}
+	}
 }
