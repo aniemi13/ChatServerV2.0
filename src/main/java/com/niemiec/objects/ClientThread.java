@@ -2,20 +2,20 @@ package com.niemiec.objects;
 
 import java.net.Socket;
 
-import com.niemiec.battleship.manager.BattleshipGamesManager;
+import com.niemiec.battleship.manager.BattleshipManagementServer;
 import com.niemiec.connections.InputOutputStream;
 import com.niemiec.objects.managers.ClientThreadManager;
-import com.niemiec.objects.managers.MessagesManagement;
+import com.niemiec.objects.managers.MessagesManagementServer;
 
 public class ClientThread extends Thread {
 	private String nick;
 	private InputOutputStream inputOutputStream;
-	private MessagesManagement messagesManagement;
+	private MessagesManagementServer messagesManagement;
 
-	public ClientThread(Socket socket, ClientThreadManager clientThreadManager, BattleshipGamesManager battleshipGamesManager) {
+	public ClientThread(Socket socket, ClientThreadManager clientThreadManager, BattleshipManagementServer battleshipManagement) {
 		this.nick = null;
 		this.inputOutputStream = new InputOutputStream(socket);
-		this.messagesManagement = new MessagesManagement(this, clientThreadManager, battleshipGamesManager);
+		this.messagesManagement = new MessagesManagementServer(this, clientThreadManager, battleshipManagement);
 	}
 
 	@Override

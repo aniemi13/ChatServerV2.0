@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.niemiec.battleship.manager.BattleshipGamesManager;
+import com.niemiec.battleship.manager.BattleshipManagementServer;
 import com.niemiec.objects.ClientThread;
 import com.niemiec.objects.managers.ClientThreadManager;
 
@@ -12,12 +12,12 @@ public class MainWhileServer extends Thread {
 	private ServerSocket serverSocket = null;
 	private int port;
 	private ClientThreadManager clientThreadManager;
-	private BattleshipGamesManager battleshipGamesManager;
+	private BattleshipManagementServer battleshipManagement;
 
 	public MainWhileServer(int port) {
 		this.port = port;
 		clientThreadManager = new ClientThreadManager();
-		battleshipGamesManager = new BattleshipGamesManager();
+		battleshipManagement = new BattleshipManagementServer(clientThreadManager);
 		createServerSocket();
 	}
 
@@ -36,7 +36,7 @@ public class MainWhileServer extends Thread {
 		while (true) {
 			socket = getSocketFromClient();
 			ServerConsole.log("Nadeszło nowe połączenie...");
-			ClientThread clientThread = new ClientThread(socket, clientThreadManager, battleshipGamesManager);
+			ClientThread clientThread = new ClientThread(socket, clientThreadManager, battleshipManagement);
 			clientThread.start();
 			ServerConsole.log("Dodano nowego klienta: " + clientThread);
 		}

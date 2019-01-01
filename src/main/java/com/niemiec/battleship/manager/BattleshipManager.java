@@ -1,5 +1,5 @@
 package com.niemiec.battleship.manager;
 
-public class BattleshipGamesManager {
+public class BattleshipManager {
 
 }

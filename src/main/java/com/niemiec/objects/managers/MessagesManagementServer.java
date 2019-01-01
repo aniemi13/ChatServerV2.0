@@ -1,6 +1,7 @@
 package com.niemiec.objects.managers;
 
-import com.niemiec.battleship.manager.BattleshipGamesManager;
+import com.niemiec.battleship.manager.BattleshipGame;
+import com.niemiec.battleship.manager.BattleshipManagementServer;
 import com.niemiec.chat.messages.CheckNickMessage;
 import com.niemiec.chat.messages.ExitMessage;
 import com.niemiec.chat.messages.GroupMessage;
@@ -8,16 +9,16 @@ import com.niemiec.chat.messages.PrivateMessage;
 import com.niemiec.chat.messages.ReadyToWorkMessage;
 import com.niemiec.objects.ClientThread;
 
-public class MessagesManagement {
+public class MessagesManagementServer {
 	private ClientThread clientThread;
 	private ClientThreadManager clientThreadManager;
-//	private BattleshipGamesManager battleshipGamesManager;
+	private BattleshipManagementServer battleshipManagement;
 
-	public MessagesManagement(ClientThread clientThread, ClientThreadManager clientThreadManager,
-			BattleshipGamesManager battleshipGamesManager) {
+	public MessagesManagementServer(ClientThread clientThread, ClientThreadManager clientThreadManager,
+			BattleshipManagementServer battleshipManagement) {
 		this.clientThread = clientThread;
 		this.clientThreadManager = clientThreadManager;
-//		this.battleshipGamesManager = battleshipGamesManager;
+		this.battleshipManagement = battleshipManagement;
 	}
 
 	public boolean recieveTheObject(Object object) {
@@ -29,11 +30,17 @@ public class MessagesManagement {
 			checkNick((CheckNickMessage) object);
 		} else if (object instanceof ReadyToWorkMessage) {
 			updateUsersList();
+		} else if (object instanceof BattleshipGame) {
+			receiveBattleshipGame((BattleshipGame) object);
 		} else if (object instanceof ExitMessage) {
 			deleteClientThread((ExitMessage) object);
 			return false;
 		}
 		return true;
+	}
+
+	private void receiveBattleshipGame(BattleshipGame battleshipGame) {
+		battleshipManagement.receiveBattleshipGame(battleshipGame);
 	}
 
 	private void updateUsersList() {
