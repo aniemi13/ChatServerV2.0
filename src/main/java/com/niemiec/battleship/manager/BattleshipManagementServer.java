@@ -31,8 +31,21 @@ public class BattleshipManagementServer {
 	}
 
 	private void receiveAcceptingTheGame(BattleshipGame battleshipGame) {
+		//tworzymy logikę gry
+		//nadajemy grze indeks
+		//wysyłany informację do graczy, że mogą dodawać statki START_THE_GAME
+		battleshipGame = createNewBattleship(battleshipGame);
+		battleshipGame.setGameStatus(BattleshipGame.ADD_SHIPS);
+		
+		clientThreadManager.sendTheObject(battleshipGame.getInvitingPlayerNick(), battleshipGame);
 		battleshipGame.createBattleshipGameForOpponent();
 		clientThreadManager.sendTheObject(battleshipGame.getInvitingPlayerNick(), battleshipGame);
+	}
+
+	private BattleshipGame createNewBattleship(BattleshipGame battleshipGame) {
+		int index = battleshipManager.createBattleship();
+		battleshipGame.setGameIndex(index);
+		return battleshipGame;
 	}
 
 	private void receiveGameProposal(BattleshipGame battleshipGame) {
