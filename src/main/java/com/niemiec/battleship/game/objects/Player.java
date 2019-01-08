@@ -14,4 +14,6 @@ public interface Player {
 	
 	public boolean getInformationInThePlayerIsVirtual();
 	public boolean isVirtualPlayer();
+	
+	public String getNick();
 }

@@ -1,5 +1,6 @@
 package com.niemiec.battleship.manager;
 
+import com.niemiec.battleship.game.Battleship;
 import com.niemiec.objects.managers.ClientThreadManager;
 
 public class BattleshipManagementServer {
@@ -22,6 +23,20 @@ public class BattleshipManagementServer {
 		case BattleshipGame.REJECTION_GAME_PROPOSAL:
 			receiveRejectionGameProposal(battleshipGame);
 			break;
+		case BattleshipGame.SHIPS_ADDED:
+			receiveShipsAdded(battleshipGame);
+			break;
+		}
+	}
+
+	private void receiveShipsAdded(BattleshipGame battleshipGame) {
+		
+		Battleship battleship = battleshipManager.getBattleship(battleshipGame.getGameIndex());
+		battleship.addPlayer(battleshipGame.getInvitingPlayer());
+		if (battleship.checkIfStart()) {
+			BattleshipGame b = battleship.generateBattleshipGameForStart(battleshipGame);
+			clientThreadManager.sendTheObject(battleship.getNickFirstPlayer(), b);
+			clientThreadManager.sendTheObject(battleship.getNickSecondPlayer(), b);
 		}
 	}
 

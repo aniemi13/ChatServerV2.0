@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class PlayerImpl implements Player, Serializable {
+	private String nick;
+	public String getNick() {
+		return nick;
+	}
+
 	private int typeOfPlayer;
 	private Board board;
 	private Board opponentBoard;
@@ -13,11 +18,12 @@ public class PlayerImpl implements Player, Serializable {
 	private Coordinates coordinatesOnHit;
 	private int directionOnHit;
 
-	public PlayerImpl(int typeOfPlayer) {
+	public PlayerImpl(int typeOfPlayer, String nick) {
 		this.board = new Board();
 		this.opponentBoard = new Board();
 		this.collectionShips = new CollectionShips();
 		this.typeOfPlayer = typeOfPlayer;
+		this.nick = nick;
 		this.sunkenShips = 0;
 		resetHitData();
 
