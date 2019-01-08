@@ -65,14 +65,18 @@ public class Battleship {
 		
 		battleshipGame.setGameStatus(BattleshipGame.START_THE_GAME);
 		
-		updateBattleshipGame(battleshipGame);
+		battleshipGame.setNickWhoseTourn(nicks[tourn]);
 		
 		return battleshipGame;
 	}
-	
-	private void updateBattleshipGame(BattleshipGame battleshipGame) {
-		battleshipGame.setWhoseTourn(tourn);
-		battleshipGame.setNicks(nicks);
-		battleshipGame.setPlayers(players.get(nicks[0]), players.get(nicks[1]));
+
+	public Object sendFirstPlayer(BattleshipGame b) {
+		b.setPlayer(players.get(nicks[0]));
+		return b;
+	}
+
+	public Object sendSecondPlaayer(BattleshipGame b) {
+		b.setPlayer(players.get(nicks[1]));
+		return b;
 	}
 }

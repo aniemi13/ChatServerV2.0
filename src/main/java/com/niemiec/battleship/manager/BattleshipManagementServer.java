@@ -35,8 +35,8 @@ public class BattleshipManagementServer {
 		battleship.addPlayer(battleshipGame.getInvitingPlayer());
 		if (battleship.checkIfStart()) {
 			BattleshipGame b = battleship.generateBattleshipGameForStart(battleshipGame);
-			clientThreadManager.sendTheObject(battleship.getNickFirstPlayer(), b);
-			clientThreadManager.sendTheObject(battleship.getNickSecondPlayer(), b);
+			clientThreadManager.sendTheObject(battleship.getNickFirstPlayer(), battleship.sendFirstPlayer(b));
+			clientThreadManager.sendTheObject(battleship.getNickSecondPlayer(), battleship.sendSecondPlaayer(b));
 		}
 	}
 
