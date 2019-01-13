@@ -198,8 +198,8 @@ public class ShotShip implements Serializable  {
 //			return "VirtualPlayer";
 //	}
 
-	public int getWinner() {
-		return winner;
+	public String getWinner() {
+		return players[winner].getNick();
 	}
 	
 	public int getTurn() {

@@ -26,6 +26,7 @@ public class Battleship {
 	public BattleshipGame receiveStartTheGame(BattleshipGame battleshipGame) {
 		if (shotShip.shot(battleshipGame.getCoordinates())) {
 			battleshipGame.setGameStatus(BattleshipGame.END_GAME);
+			battleshipGame.setWinnerNick(shotShip.getWinner());
 		}
 		battleshipGame.setNickWhoseTourn(nicks[shotShip.getTurn()]);
 		return battleshipGame;
