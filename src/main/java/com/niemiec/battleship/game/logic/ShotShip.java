@@ -1,56 +1,46 @@
 package com.niemiec.battleship.game.logic;
 
 import java.io.Serializable;
-import java.util.Random;
 
 import com.niemiec.battleship.game.data.check.CheckData;
-import com.niemiec.battleship.game.data.create.automatically.CreatorAutomaticallyShotData;
 import com.niemiec.battleship.game.objects.Board;
 import com.niemiec.battleship.game.objects.Coordinates;
 import com.niemiec.battleship.game.objects.Player;
 import com.niemiec.battleship.game.objects.PlayerImpl;
 import com.niemiec.battleship.game.objects.Ship;
 
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-
 @SuppressWarnings("serial")
 public class ShotShip implements Serializable  {
-	private CreatorAutomaticallyShotData creatorAutomaticallyShotData;
 	private boolean gameEnd;
 	private int winner;
-	private PlayerImpl[] players;
-
-	public void setInitialData(PlayerImpl realPlayer, PlayerImpl virtualPlayer) {
-		this.players = new PlayerImpl[2];
-		players[Player.REAL_PLAYER] = realPlayer;
-		players[Player.VIRTUAL_PLAYER] = virtualPlayer;
-		this.gameEnd = false;
-		this.winner = -1;
-		this.creatorAutomaticallyShotData = new CreatorAutomaticallyShotData(players);
-	}
+	private int turn;
+	private Player[] players;
 
 	public ShotShip() {
+		this.gameEnd = false;
+		this.winner = -1;
+		this.turn = 0;
+		this.players = new PlayerImpl[2];
 	}
 
-	public boolean shot(ActionEvent event) {
-		if (!shotRealPlayer(event) && !gameEnd) {
-			shotVirtualPlayer();
+	public void addPlayers(Player player1, Player player2) {
+		players[0] = player1;
+		players[1] = player2;
+	}
+	
+	public Player getPlayer(int index) {
+		return (Player) players[index].clone();
+	}
+
+	public boolean shot(Coordinates coordinates) {
+		if (!shotRealPlayer(coordinates) && !gameEnd) {
+			changeTurn();
 		}
 		return gameEnd;
 	}
 
-	private boolean shotRealPlayer(ActionEvent event) {
-		Coordinates coordinates = CheckData.getCoordinatesFromButton((Button) event.getSource());
-		return shotMast(coordinates, Player.REAL_PLAYER);
-	}
-
-	private void shotVirtualPlayer() {
-		while (true) {
-			Coordinates coordinates = creatorAutomaticallyShotData.downloadShotFromVirtualPlayer(Player.VIRTUAL_PLAYER);
-			if (!shotMast(coordinates, Player.VIRTUAL_PLAYER) || gameEnd)
-				break;
-		}
+	private boolean shotRealPlayer(Coordinates coordinates) {
+		return shotMast(coordinates, turn);
 	}
 
 	private boolean shotMast(Coordinates coordinates, int activePlayer) {
@@ -173,7 +163,7 @@ public class ShotShip implements Serializable  {
 	}
 
 	private int getIndexOpponentPlayer(int activePlayer) {
-		return (activePlayer == Player.REAL_PLAYER) ? Player.VIRTUAL_PLAYER : Player.REAL_PLAYER;
+		return (activePlayer == Player.SECOND_PLAYER) ? Player.FIRST_PLAYER : Player.SECOND_PLAYER;
 	}
 
 	private void setBoxInToPlayerBoard(Coordinates coordinates, int box, int typeOfPlayer) {
@@ -188,23 +178,35 @@ public class ShotShip implements Serializable  {
 		return players[typeOfPlayer].getBoard().getBox(coordinates);
 	}
 
-	public void firstShotInTheGame() {
-		int r = randomStart();
+//	public void firstShotInTheGame() {
+//		int r = randomStart();
+//
+//		if (r == Player.FIRST_PLAYER) {
+//			shotVirtualPlayer();
+//		}
+//	}
 
-		if (r == Player.VIRTUAL_PLAYER) {
-			shotVirtualPlayer();
-		}
+//	private int randomStart() {
+//		Random random = new Random();
+//		return random.nextInt(2);
+//	}
+
+//	public String getWinnerName() {
+//		if (winner == Player.SECOND_PLAYER)
+//			return "RealPlayer";
+//		else
+//			return "VirtualPlayer";
+//	}
+
+	public int getWinner() {
+		return winner;
 	}
-
-	private int randomStart() {
-		Random random = new Random();
-		return random.nextInt(2);
+	
+	public int getTurn() {
+		return turn;
 	}
-
-	public String getWinnerName() {
-		if (winner == Player.REAL_PLAYER)
-			return "RealPlayer";
-		else
-			return "VirtualPlayer";
+	
+	private void changeTurn() {
+		turn = (turn == 0 ? 1 : 0);
 	}
 }

@@ -26,7 +26,17 @@ public class BattleshipManagementServer {
 		case BattleshipGame.SHIPS_ADDED:
 			receiveShipsAdded(battleshipGame);
 			break;
+		case BattleshipGame.START_THE_GAME:
+			receiveStartTheGame(battleshipGame);
+			break;
 		}
+	}
+
+	private void receiveStartTheGame(BattleshipGame battleshipGame) {
+		Battleship battleship = battleshipManager.getBattleship(battleshipGame.getGameIndex());
+		BattleshipGame b = battleship.receiveStartTheGame(battleshipGame);
+		clientThreadManager.sendTheObject(battleship.getNickFirstPlayer(), battleship.sendFirstPlayer(b));
+		clientThreadManager.sendTheObject(battleship.getNickSecondPlayer(), battleship.sendSecondPlaayer(b));
 	}
 
 	private void receiveShipsAdded(BattleshipGame battleshipGame) {
