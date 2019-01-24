@@ -1,6 +1,7 @@
 package com.niemiec.battleship.game.logic;
 
 import java.io.Serializable;
+import java.util.Random;
 
 import com.niemiec.battleship.game.data.check.CheckData;
 import com.niemiec.battleship.game.objects.Board;
@@ -19,8 +20,13 @@ public class ShotShip implements Serializable  {
 	public ShotShip() {
 		this.gameEnd = false;
 		this.winner = -1;
-		this.turn = 0;
+		this.turn = randomTurn();
 		this.players = new PlayerImpl[2];
+	}
+
+	private int randomTurn() {
+		Random random = new Random();
+		return random.nextInt(2);
 	}
 
 	public void addPlayers(Player player1, Player player2) {

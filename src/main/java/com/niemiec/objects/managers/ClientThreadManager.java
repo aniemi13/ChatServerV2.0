@@ -2,6 +2,7 @@ package com.niemiec.objects.managers;
 
 import java.util.ArrayList;
 
+import com.niemiec.battleship.manager.BattleshipGame;
 import com.niemiec.chat.messages.UsersListMessage;
 import com.niemiec.objects.ClientThread;
 
@@ -16,6 +17,10 @@ public class ClientThreadManager {
 	
 	public synchronized void sendTheObject(String nick, Object object) {
 		getClientThread(nick).sendTheObject(object);
+	}
+	
+	public synchronized void sendTheObject(Object battleshipGame) {
+		getClientThread(((BattleshipGame) battleshipGame).getPlayer().getNick()).sendTheObject(battleshipGame);
 	}
 	
 	public synchronized void sendAllClientThreadNickList() {

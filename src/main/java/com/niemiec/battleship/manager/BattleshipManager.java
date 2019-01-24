@@ -3,6 +3,8 @@ package com.niemiec.battleship.manager;
 import java.util.ArrayList;
 
 import com.niemiec.battleship.game.Battleship;
+import com.niemiec.battleship.game.objects.Player;
+import com.niemiec.battleship.game.objects.PlayerImpl;
 
 public class BattleshipManager {
 	private ArrayList<Battleship> battleships;
@@ -20,15 +22,13 @@ public class BattleshipManager {
 		}
 		return null;
 	}
-
-	public int createBattleship() {
-		index++;
-		Battleship battleship = new Battleship(index);
-		battleships.add(battleship);
-		return index;
+	
+	public Battleship getBattleship(BattleshipGame battleshipGame) {
+		return getBattleship(battleshipGame.getGameIndex());
 	}
 
-	public void deleteBattleship(int index) {
+	public void deleteBattleship(BattleshipGame battleshipGame) {
+		int index = battleshipGame.getGameIndex();
 		for (int i = 0; i < battleships.size(); i++) {
 			if (battleships.get(i).getIndex() == index)
 				battleships.remove(i);
@@ -43,5 +43,16 @@ public class BattleshipManager {
 					+ ", player2: " + b.getNickSecondPlayer());
 		}
 		System.out.println("******************************************");
+	}
+
+	public BattleshipGame createNewBattleship(BattleshipGame battleshipGame) {
+		index++;
+		Battleship battleship = new Battleship(index);
+		battleship.addPlayer(battleshipGame.getPlayer());
+		battleship.addPlayer(new PlayerImpl(Player.SECOND_PLAYER, battleshipGame.getOpponentPlayerNick()));
+		battleshipGame.setGameIndex(index);
+		battleships.add(battleship);
+
+		return battleshipGame;
 	}
 }

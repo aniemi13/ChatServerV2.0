@@ -26,56 +26,65 @@ public class BattleshipManagementServer {
 		case BattleshipGame.SHIPS_ADDED:
 			receiveShipsAdded(battleshipGame);
 			break;
-		case BattleshipGame.START_THE_GAME:
-			receiveStartTheGame(battleshipGame);
+		case BattleshipGame.PLAY_THE_GAME:
+			receivePlayTheGame(battleshipGame);
+			break;
+		case BattleshipGame.END_GAME:
+			receiveEndGame(battleshipGame);
 			break;
 		}
 	}
 
-	private void receiveStartTheGame(BattleshipGame battleshipGame) {
+	private void receiveEndGame(BattleshipGame battleshipGame) {
+		sendToBothPlayers(battleshipGame);
+		battleshipManager.deleteBattleship(battleshipGame);
+	}
+
+	private void receivePlayTheGame(BattleshipGame battleshipGame) {
 		Battleship battleship = battleshipManager.getBattleship(battleshipGame.getGameIndex());
-		BattleshipGame b = battleship.receiveStartTheGame(battleshipGame);
-		clientThreadManager.sendTheObject(battleship.getNickFirstPlayer(), battleship.sendFirstPlayer(b));
-		clientThreadManager.sendTheObject(battleship.getNickSecondPlayer(), battleship.sendSecondPlaayer(b));
-		if (b.getGameStatus() == BattleshipGame.END_GAME) {
-			battleshipManager.deleteBattleship(battleshipGame.getGameIndex());
+		battleshipGame = battleship.receivePlayTheGame(battleshipGame);
+		sendToBothPlayers(battleshipGame);
+		if (battleshipGame.getGameStatus() == BattleshipGame.END_GAME) {
+			battleshipManager.deleteBattleship(battleshipGame);
 		}
 	}
 
 	private void receiveShipsAdded(BattleshipGame battleshipGame) {
-		
-		Battleship battleship = battleshipManager.getBattleship(battleshipGame.getGameIndex());
-		battleship.addPlayer(battleshipGame.getInvitingPlayer());
+
+		Battleship battleship = battleshipManager.getBattleship(battleshipGame);
+		battleship.updatePlayer(battleshipGame.getPlayer());
 		if (battleship.checkIfStart()) {
 			BattleshipGame b = battleship.generateBattleshipGameForStart(battleshipGame);
-			clientThreadManager.sendTheObject(battleship.getNickFirstPlayer(), battleship.sendFirstPlayer(b));
-			clientThreadManager.sendTheObject(battleship.getNickSecondPlayer(), battleship.sendSecondPlaayer(b));
+			sendToBothPlayers(b);
 		}
 	}
 
 	private void receiveRejectionGameProposal(BattleshipGame battleshipGame) {
-		battleshipGame.createBattleshipGameForOpponent();
-		clientThreadManager.sendTheObject(battleshipGame.getInvitingPlayerNick(), battleshipGame);
+		Battleship battleship = battleshipManager.getBattleship(battleshipGame);
+		battleshipGame = battleship.createBattleshipGameForOpponentPlayer(battleshipGame);
+		
+		clientThreadManager.sendTheObject(battleshipGame);		
+		battleshipManager.deleteBattleship(battleshipGame);
 	}
 
 	private void receiveAcceptingTheGame(BattleshipGame battleshipGame) {
-		battleshipGame = createNewBattleship(battleshipGame);
 		battleshipGame.setGameStatus(BattleshipGame.ADD_SHIPS);
-		
-		clientThreadManager.sendTheObject(battleshipGame.getInvitingPlayerNick(), battleshipGame);
-		battleshipGame.createBattleshipGameForOpponent();
-		clientThreadManager.sendTheObject(battleshipGame.getInvitingPlayerNick(), battleshipGame);
-	}
-
-	private BattleshipGame createNewBattleship(BattleshipGame battleshipGame) {
-		int index = battleshipManager.createBattleship();
-		battleshipGame.setGameIndex(index);
-		return battleshipGame;
+		sendToBothPlayers(battleshipGame);
 	}
 
 	private void receiveGameProposal(BattleshipGame battleshipGame) {
-		battleshipGame.createBattleshipGameForOpponent();
-		clientThreadManager.sendTheObject(battleshipGame.getInvitingPlayerNick(), battleshipGame);
+		battleshipGame = battleshipManager.createNewBattleship(battleshipGame);
+		sendToOpponentPlayer(battleshipGame);
 	}
 
+	private void sendToBothPlayers(BattleshipGame battleshipGame) {
+		Battleship battleship = battleshipManager.getBattleship(battleshipGame);
+		clientThreadManager.sendTheObject(battleship.sendToTheFirstPlayer(battleshipGame));
+		clientThreadManager.sendTheObject(battleship.sendToTheSecondPlayer(battleshipGame));
+	}
+	
+	private void sendToOpponentPlayer(BattleshipGame battleshipGame) {
+		Battleship battleship = battleshipManager.getBattleship(battleshipGame);
+		clientThreadManager.sendTheObject(battleship.createBattleshipGameForOpponentPlayer(battleshipGame));
+	}
 }
