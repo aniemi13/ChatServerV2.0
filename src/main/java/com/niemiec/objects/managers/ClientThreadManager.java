@@ -2,8 +2,8 @@ package com.niemiec.objects.managers;
 
 import java.util.ArrayList;
 
-import com.niemiec.battleship.manager.BattleshipGame;
-import com.niemiec.chat.messages.UsersListMessage;
+import com.niemiec.chat.messages.condition.UsersListMessage;
+import com.niemiec.games.battleship.manager.BattleshipGame;
 import com.niemiec.objects.ClientThread;
 
 public class ClientThreadManager {

@@ -1,12 +1,12 @@
 package com.niemiec.objects.managers;
 
-import com.niemiec.battleship.manager.BattleshipGame;
-import com.niemiec.battleship.manager.BattleshipManagementServer;
-import com.niemiec.chat.messages.CheckNickMessage;
-import com.niemiec.chat.messages.ExitMessage;
-import com.niemiec.chat.messages.GroupMessage;
-import com.niemiec.chat.messages.PrivateMessage;
-import com.niemiec.chat.messages.ReadyToWorkMessage;
+import com.niemiec.chat.messages.condition.CheckNickMessage;
+import com.niemiec.chat.messages.condition.ExitMessage;
+import com.niemiec.chat.messages.condition.ReadyToWorkMessage;
+import com.niemiec.chat.messages.text.GroupMessage;
+import com.niemiec.chat.messages.text.PrivateMessage;
+import com.niemiec.games.battleship.manager.BattleshipGame;
+import com.niemiec.games.battleship.manager.BattleshipManagementServer;
 import com.niemiec.objects.ClientThread;
 
 public class MessagesManagementServer {

@@ -2,8 +2,8 @@ package com.niemiec.objects;
 
 import java.net.Socket;
 
-import com.niemiec.battleship.manager.BattleshipManagementServer;
 import com.niemiec.connections.InputOutputStream;
+import com.niemiec.games.battleship.manager.BattleshipManagementServer;
 import com.niemiec.objects.managers.ClientThreadManager;
 import com.niemiec.objects.managers.MessagesManagementServer;
 

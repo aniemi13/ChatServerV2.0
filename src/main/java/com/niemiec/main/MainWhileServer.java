@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.niemiec.battleship.manager.BattleshipManagementServer;
+import com.niemiec.games.battleship.manager.BattleshipManagementServer;
 import com.niemiec.objects.ClientThread;
 import com.niemiec.objects.managers.ClientThreadManager;
 
